@@ -14,30 +14,18 @@ let multichar_consts = ['pi'];
 
 export let defaultVars = [{ var_name:'e',value: 2.718281828459045 }, { var_name:'π', value: 3.14159265359 }];
 
-// let a = new node_expression("13scos(0.58(s/y)) + 5s^2 - 10y");
-
-//breakInput: x+14x+1231avax cosabva^svsa
-
-export function createEquation(inputStr){
-    var equation = {
-
-    }
-}
-
 export function createExpression(inputStr){
     var exp = {
         inputString: inputStr,
-        processedString: null,
         variables:[] ,
         node: null,
         totalVariables:0,
         unknownVariables:0,
-        updateVariables: function(){},
         newString:function(str){
             inputString = str;
             this.create();
         },
-        
+
         create: function(){
             for(let i =0;i<defaultVars.length;i++){
                 this.variables.push(defaultVars[i]);
@@ -45,9 +33,8 @@ export function createExpression(inputStr){
             if(inputStr == null){
                 throw "inputString is not defined";
             }
-            let processedInput = processInputString(inputStr,this.variables);
-            this.processedString = processedInput._processedStr;
-            this.variables = processedInput.vars;
+            this.node = math.parse(inputStr);
+            
 
             this.totalVariables = processedInput.vars==null?0:this.variables.keys().length;
             this.unknownVariables = this.totalVariables;
@@ -59,6 +46,7 @@ export function createExpression(inputStr){
     
     return exp.create();;
 }
+
 // let a = createExpression("13scos(0.58(s/y)) + 5s^2 - 10y");
 // console.log(a);
 // a.create();
