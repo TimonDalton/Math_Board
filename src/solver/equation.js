@@ -1,13 +1,13 @@
 import * as math from 'mathjs';
 
 export function getVarsFromTree(node){
-    let functions = ['sin', 'asin', 'cos', 'acos', 'tan', 'atan', 'ln','e','pi','π'];
+    let functions = ['sin', 'asin', 'cos', 'acos', 'tan', 'atan', 'ln','e','pi','π','sqrt'];
     let vars = [];
     node.traverse(function (node) {
         switch (node.type) {
           case 'SymbolNode':
             if(!vars.includes(node.name)&&!functions.includes(node.name))
-            vars.push(node.name);
+                vars.push(node.name);
             break
           default:
         }

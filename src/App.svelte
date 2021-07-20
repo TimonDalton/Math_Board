@@ -1,3 +1,7 @@
+<head>
+	<script src="https://kit.fontawesome.com/509944f454.js" crossorigin="anonymous"></script>
+</head>
+
 <script>
 	import  {index, log } from "mathjs";
 	import { createEquation } from "./solver/equation";
@@ -155,6 +159,28 @@
 		//etc
 				
 	}
+	function cleanupGlobalScope(){
+		let existingVariables = [];
+		for(let i =0;i<equations.length;i++){
+			for(let j =0;j<equations[i].localVariables.length;j++){
+				if(!existingVariables.includes(equations[i].localVariables[j])){
+					existingVariables.push(equations[i].localVariables[j]);
+				}
+			}			
+		}
+
+		for(let key in globalScope){
+			if(!(existingVariables.includes(key))){
+				delete globalScope[key];
+			}
+		}
+
+		for(let i =0;i<equations.length;i++){
+			equations[i].updateLocalScope(globalScope);
+		}
+		equations = equations;
+		globalScope = globalScope;
+	}
 	function clearNonExplicitVarsAndUpdate(){
 		for(let i =0;i<equations.length;i++){
 			for(let j=0;j<equations[i].localVariables.length;j++){
@@ -174,9 +200,9 @@
 	<p>x+y+a+b=1</p>	
 	<div id="wrapper">
 		<div id="leftScreen">
-			<h1 class="heading">Equation writer and solver prototype</h1>
+			<h1 class="heading">Equationator</h1>
 			<button on:click={addEquationClick}> Add Equation </button>
-			{#each equationStrings as eqStr, index}
+			{#each equationStrings as eqStr , index}
 				{#if equations[index].leftNode && equations[index].rightNode}
 					<p>
 						{equations[index].leftNode.toString()} = {equations[
@@ -187,18 +213,28 @@
 					<p>:{eqStr}</p>
 				{/if}
 				<div class = "eqInputDiv">
+					<i class="fas fa-trash-alt" style="font-size:24px;" on:click={function(){
+						equationStrings.splice(index,1);
+						equations.splice(index,1);
+						cleanupGlobalScope();
+						
+					}}></i>
 					<input
 						type="text"
 						bind:value={equationStrings[index]}
 						on:keyup={() => eqInputTextUpdate(index)}
 						class="valInput {(equations[index].errorString)?'eqInputError':'equationTextInput'}"
 					/>
+					<i class="fas fa-sync" style="font-size:24px;" on:click={function(){
+						clearNonExplicitVarsAndUpdate();
+					}}></i>
+
 					{#if equations[index].errorString}
 						<p class = "eqErrorString">{equations[index].errorString}</p>
 					{/if}
 				</div>
 				<div class="parent flex-parent">
-					{#each equations[index].localVariables as locVar, i}
+					{#each equations[index].localVariables as locVar (locVar)}
 						<div class="child flex-child parent flex-parent">
 							<p class="child flex-child">{locVar}:</p>
 							<input
