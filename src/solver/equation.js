@@ -81,3 +81,4 @@ export function createEquation(inputString){
     }
     return equation;
 }
+

@@ -213,7 +213,7 @@
 					<p>:{eqStr}</p>
 				{/if}
 				<div class = "eqInputDiv">
-					<i class="fas fa-trash-alt" style="font-size:24px;" on:click={function(){
+					<i class="fa fa-trash-o" style="font-size:24px;" on:click={function(){
 						equationStrings.splice(index,1);
 						equations.splice(index,1);
 						cleanupGlobalScope();

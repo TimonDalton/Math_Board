@@ -2,6 +2,7 @@
   "name": "svelte-app",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",
@@ -18,8 +19,10 @@
     "svelte": "^3.0.0"
   },
   "dependencies": {
+    "algebra.js": "git+https://github.com/nicolewhite/algebra.js.git",
     "mathjax-full": "^3.2.0",
     "mathjs": "^9.4.3",
+    "nerdamer": "^1.1.12",
     "sirv-cli": "^1.0.0"
   }
 }
